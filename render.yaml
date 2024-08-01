@@ -3,26 +3,26 @@ services:
     name: datazone-web-api
     env: docker
     dockerfilePath: ./DataZone-web-api/Dockerfile
-    buildCommand: ""  # Optional: command to build the service
     startCommand: ""  # Optional: command to start the service
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Development
-    ports:
-      - port: 8888
     disk:
       name: shared-data
       mountPath: /shared-data
+      sizeGB: 10  # Adjust size as needed
 
   - type: web
     name: pg-admin-ui
     env: docker
-    dockerCommand: docker run --name pg-admin-ui -e PGADMIN_DEFAULT_EMAIL=yosephhabtamu5@gmail.com -e PGADMIN_DEFAULT_PASSWORD=123456 -p 82:80 dpage/pgadmin4
-    ports:
-      - port: 80
-        targetPort: 82
+    image: dpage/pgadmin4  # Using the official image directly
+    envVars:
+      - key: PGADMIN_DEFAULT_EMAIL
+        value: yosephhabtamu5@gmail.com
+      - key: PGADMIN_DEFAULT_PASSWORD
+        value: 123456
 
-  - type: web
+  - type: worker
     name: datazone-analytics-server-exploratory
     env: docker
     dockerfilePath: ./DataZone-analytics-server/Dockerfile
@@ -30,8 +30,9 @@ services:
     disk:
       name: shared-data
       mountPath: /shared-data
+      sizeGB: 10
 
-  - type: web
+  - type: worker
     name: datazone-analytics-server-regression
     env: docker
     dockerfilePath: ./DataZone-analytics-server/Dockerfile
@@ -39,8 +40,9 @@ services:
     disk:
       name: shared-data
       mountPath: /shared-data
+      sizeGB: 10
 
-  - type: web
+  - type: worker
     name: datazone-analytics-server-visualization
     env: docker
     dockerfilePath: ./DataZone-analytics-server/Dockerfile
@@ -48,23 +50,21 @@ services:
     disk:
       name: shared-data
       mountPath: /shared-data
+      sizeGB: 10
 
   - type: web
     name: datazone-message
     env: docker
     dockerfilePath: ./rabbitmq/Dockerfile
-    ports:
-      - port: 5672
-      - port: 15672
 
 databases:
   - type: postgresql
     name: datazone
-    plan: standard
+    plan: free
     envVars:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: datazone
-    disk:
-      name: shared-data
-      mountPath: /shared-data
+      - key: POSTGRES_USER
+        value: postgres
+      - key: POSTGRES_PASSWORD
+        value: 123456
+      - key: POSTGRES_DB
+        value: datazone
