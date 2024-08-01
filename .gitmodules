@@ -1,0 +1,6 @@
+[submodule "DataZone-analytics-server"]
+	path = DataZone-analytics-server
+	url = https://github.com/destifo/DataZone-analytics-server.git
+[submodule "DataZone-web-api"]
+	path = DataZone-web-api
+	url = https://github.com/destifo/DataZone-web-api.git

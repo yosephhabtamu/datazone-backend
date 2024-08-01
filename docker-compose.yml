@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: datazone
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: datazone
+    networks:
+      - datazone
+
+  pgAdmin:
+    image: dpage/pgadmin4
+    container_name: pg-admin-ui
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=yosephhabtamu5@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    ports:
+      - "82:80"
+    networks:
+      - datazone
+
+  app:
+    build:
+      context: .
+      dockerfile: ./DataZone-web-api/Dockerfile
+    container_name: datazone-web-api-compose
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "8888:8888"
+    volumes:
+      - shared-data:/shared-data
+    networks:
+      - datazone
+  
+  rabbitmq:
+    build:
+      context: .
+      dockerfile: ./rabbitmq/Dockerfile
+    container_name: datazone-message
+    ports:
+      - "5673:5672"  # RabbitMQ default port
+      - "15673:15672"  # RabbitMQ management plugin port
+    networks:
+      - datazone
+
+  analytics-exploratory:
+    build:
+      context: .
+      dockerfile: ./DataZone-analytics-server/Dockerfile
+    container_name: datazone_analytics_server_exploratory
+    command: ["poetry", "run", "python", "main.py", "exploratory"]
+    volumes:
+      - shared-data:/shared-data
+    networks:
+      - datazone
+
+  analytics-regression:
+    build:
+      context: .
+      dockerfile: ./DataZone-analytics-server/Dockerfile
+    container_name: datazone_analytics_server_regression
+    command: ["poetry", "run", "python", "main.py", "regression"]
+    volumes:
+      - shared-data:/shared-data
+    networks:
+      - datazone
+
+  analytics-visualization:
+    build:
+      context: .
+      dockerfile: ./DataZone-analytics-server/Dockerfile
+    container_name: datazone_analytics_server_visualization
+    command: ["poetry", "run", "python", "main.py", "visualization"]
+    volumes:
+      - shared-data:/shared-data
+    networks:
+      - datazone
+
+volumes:
+  shared-data:
+
+networks:
+  datazone:
+    driver: bridge
