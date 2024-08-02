@@ -47,4 +47,3 @@ databases:
   - name: datazone
     postgresMajorVersion: "15" 
     databaseName: datazone
-    plan: free
