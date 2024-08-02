@@ -3,7 +3,6 @@ services:
     name: datazone-web-api
     env: docker
     dockerfilePath: ./DataZone-web-api/Dockerfile
-    startCommand: ""  # Optional: command to start the service
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Development
@@ -15,8 +14,7 @@ services:
   - type: worker
     name: datazone-analytics-server-exploratory
     env: docker
-    dockerfilePath: ./DataZone-analytics-server/Dockerfile
-    startCommand: poetry run python main.py exploratory
+    dockerfilePath: ./DataZone-analytics-server/Depl-instances/Dockerfile-exploratory
     disk:
       name: shared-data
       mountPath: /shared-data
@@ -25,8 +23,7 @@ services:
   - type: worker
     name: datazone-analytics-server-regression
     env: docker
-    dockerfilePath: ./DataZone-analytics-server/Dockerfile
-    startCommand: poetry run python main.py regression
+    dockerfilePath: ./DataZone-analytics-server/Depl-instances/Dockerfile-regression
     disk:
       name: shared-data
       mountPath: /shared-data
@@ -35,8 +32,7 @@ services:
   - type: worker
     name: datazone-analytics-server-visualization
     env: docker
-    dockerfilePath: ./DataZone-analytics-server/Dockerfile
-    startCommand: poetry run python main.py visualization
+    dockerfilePath: ./DataZone-analytics-server/Depl-instances/Dockerfile-visualization
     disk:
       name: shared-data
       mountPath: /shared-data
