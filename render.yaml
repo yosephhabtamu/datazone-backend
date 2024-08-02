@@ -10,12 +10,12 @@ services:
     disk:
       name: shared-data
       mountPath: /shared-data
-      sizeGB: 10  # Adjust size as needed
+      sizeGB: 10
 
   - type: web
     name: pg-admin-ui
     env: docker
-    image: dpage/pgadmin4  # Using the official image directly
+    image: dpage/pgadmin4
     envVars:
       - key: PGADMIN_DEFAULT_EMAIL
         value: yosephhabtamu5@gmail.com
@@ -58,13 +58,7 @@ services:
     dockerfilePath: ./rabbitmq/Dockerfile
 
 databases:
-  - type: postgresql
-    name: datazone
+  - name: datazone
+    engine: postgres
+    version: 15  # Specify the version of PostgreSQL
     plan: free
-    envVars:
-      - key: POSTGRES_USER
-        value: postgres
-      - key: POSTGRES_PASSWORD
-        value: 123456
-      - key: POSTGRES_DB
-        value: datazone
