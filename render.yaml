@@ -60,5 +60,13 @@ services:
 databases:
   - name: datazone
     engine: postgres
-    version: 15  # Specify the version of PostgreSQL
+    postgresMajorVersion: "15" 
+    databaseName: datazone
+    user: postgres
+
     plan: free
+envVars:
+  - key: DATABASE_URL
+    fromDatabase:
+      name: datazone
+      property: "postgresql://postgres:123456@host:5432/datazone"
