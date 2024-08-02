@@ -59,11 +59,9 @@ services:
 
 databases:
   - name: datazone
-    engine: postgres
     postgresMajorVersion: "15" 
     databaseName: datazone
     user: postgres
-
     plan: free
 envVars:
   - key: DATABASE_URL
