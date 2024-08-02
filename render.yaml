@@ -11,7 +11,7 @@ services:
       mountPath: /shared-data
       sizeGB: 10
 
-  - type: worker
+  - type: web
     name: datazone-analytics-server-exploratory
     env: docker
     dockerfilePath: ./DataZone-analytics-server/Depl-instances/Dockerfile-exploratory
@@ -20,7 +20,7 @@ services:
       mountPath: /shared-data
       sizeGB: 10
 
-  - type: worker
+  - type: web
     name: datazone-analytics-server-regression
     env: docker
     dockerfilePath: ./DataZone-analytics-server/Depl-instances/Dockerfile-regression
@@ -29,7 +29,7 @@ services:
       mountPath: /shared-data
       sizeGB: 10
 
-  - type: worker
+  - type: web
     name: datazone-analytics-server-visualization
     env: docker
     dockerfilePath: ./DataZone-analytics-server/Depl-instances/Dockerfile-visualization
