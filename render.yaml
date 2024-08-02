@@ -63,8 +63,8 @@ databases:
     databaseName: datazone
     user: postgres
     plan: free
-envVars:
-  - key: DATABASE_URL
-    fromDatabase:
-      name: datazone
-      property: "postgresql://postgres:123456@host:5432/datazone"
+  - envVars:
+    - key: DATABASE_URL
+      fromDatabase:
+        name: datazone
+        property: "postgresql://postgres:123456@host:5432/datazone"
